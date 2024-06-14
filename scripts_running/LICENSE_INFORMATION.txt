@@ -1,0 +1,3 @@
+Please see file headers for license information.
+Our scripts and Makefile are provided under GLPv3 license.
+C code based on Amazon's code is provided under Amazon's license (http://aws.amazon.com/asl/).
