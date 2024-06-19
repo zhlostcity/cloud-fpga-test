@@ -35,7 +35,7 @@ def dramReadOnly (slot, instanceId, ipAddress, message):
     folderName = instanceId +"_"+ today +"_" + ipAddress + "_slot"+ str(slot) + "_" + message
     ret = call(['mkdir', folderName])
     # First, clean images
-    ret = call(['sudo', 'fpga-clear-local-image', '-S', str(slot) ])
+    ret = call(['fpga-clear-local-image', '-S', str(slot) ])
     time.sleep(1)
 
     Sleep_Time_Seconds = 120 # ************************* waiting period for error bits **************************
@@ -49,11 +49,11 @@ def dramReadOnly (slot, instanceId, ipAddress, message):
     fC = open("./"+folderName + "/" + subFolderName +"/C.dat", "wb" )
     fD = open("./"+folderName + "/" + subFolderName +"/D.dat", "wb" )
 
-    ret = call(['sudo', 'fpga-load-local-image', '-S', str(slot), '-I', agfi_experi]) # load the image for dram no flushing
+    ret = call(['fpga-load-local-image', '-S', str(slot), '-I', agfi_experi]) # load the image for dram no flushing
     ret = call(['sudo', './test_dram_dma', '1', str(slot)])                           # write data to dram
-    ret = call(['sudo', 'fpga-load-local-image', '-S', str(slot), '-I', agfi_idle])   # load the image cl-fifo
+    ret = call(['fpga-load-local-image', '-S', str(slot), '-I', agfi_idle])   # load the image cl-fifo
     time.sleep(Sleep_Time_Seconds)
-    ret = call(['sudo', 'fpga-load-local-image', '-S', str(slot), '-I', agfi_experi]) # load the image for dram no flushing
+    ret = call(['fpga-load-local-image', '-S', str(slot), '-I', agfi_experi]) # load the image for dram no flushing
     p = subprocess.Popen(["sudo", "./test_dram_dma", "2", str(slot)], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)# read data from dram
     line =  p.stdout.readline()
     print "DDR A\n"
@@ -115,5 +115,5 @@ def dramReadOnly (slot, instanceId, ipAddress, message):
     ret = call(["mv", "./"+folderName + "/" + subFolderName +"/C.dat", "./"+folderName + "/" + subFolderName +"/C_"+str(time_now)+".dat" ])
     ret = call(["mv", "./"+folderName + "/" + subFolderName +"/D.dat", "./"+folderName + "/" + subFolderName +"/D_"+str(time_now)+".dat" ])
     print("Finish slot "+ str(slot) +" experiments under time interval "+str(Sleep_Time_Seconds)+" seconds.\t" +str(time_now)+" \n")
-    ret = call(['sudo', 'fpga-clear-local-image', '-S', str(slot) ])
+    ret = call(['fpga-clear-local-image', '-S', str(slot) ])
 
